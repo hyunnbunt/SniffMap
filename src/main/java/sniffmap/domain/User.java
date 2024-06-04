@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @Data
 @Entity
-public class User implements UserDetails {
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -24,6 +24,8 @@ public class User implements UserDetails {
 //    private String username;
     @Column(nullable = false, unique = true)
     private String email;
+    @Column(nullable = false, unique = true)
+    private String username;
     @Column(nullable = false)
     private String password;
     @ManyToMany(fetch = FetchType.EAGER)
@@ -32,40 +34,12 @@ public class User implements UserDetails {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
-    private Collection<String> roles;
+    private Collection<Role> roles;
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
+    public Collection<GrantedAuthority> getAuthorities() {
         return roles.stream()
-                .map(SimpleGrantedAuthority::new)
+                .map(role ->
+                    new SimpleGrantedAuthority(role.getName()))
                 .collect(Collectors.toList());
     }
-    @Override
-    public String getUsername() {
-        return null;
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return false;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return false;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return false;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return false;
-    }
-//    private String name;
-//    private String phone;
-//    private String profileImageUrl;
-//    private String role;
 }

@@ -24,6 +24,7 @@ public class SignupFormDto {
     public User toEntity() {
         return User.builder()
                 .password(password)
+                .username(username)
                 .email(email)
                 .build();
     }
