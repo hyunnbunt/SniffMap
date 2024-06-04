@@ -13,5 +13,5 @@ public class AuthService {
     public User signup(User user) {
         return userRepository.save(user);
     }
-    public User getUser(String username) {return userRepository.findByUsername(username);}
+    public User getUser(String email) {return userRepository.findByEmail(email);}
 }

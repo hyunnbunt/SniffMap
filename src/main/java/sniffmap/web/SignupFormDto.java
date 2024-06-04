@@ -21,15 +21,10 @@ public class SignupFormDto {
     private String password;
     @NotBlank
     private String email;
-    @NotBlank
-    private String name;
     public User toEntity() {
-        String encodedPassword = new BCryptPasswordEncoder().encode(password);
         return User.builder()
-                .username(username)
-                .password(encodedPassword)
+                .password(password)
                 .email(email)
-                .name(name)
                 .build();
     }
 }
