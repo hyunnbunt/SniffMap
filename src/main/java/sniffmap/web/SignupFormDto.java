@@ -2,11 +2,9 @@ package sniffmap.web;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import sniffmap.domain.User;
 
 @AllArgsConstructor
@@ -21,11 +19,4 @@ public class SignupFormDto {
     private String password;
     @NotBlank
     private String email;
-    public User toEntity() {
-        return User.builder()
-                .password(password)
-                .username(username)
-                .email(email)
-                .build();
-    }
 }

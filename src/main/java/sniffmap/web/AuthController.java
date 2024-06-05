@@ -12,6 +12,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -20,9 +21,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import sniffmap.domain.User;
+import sniffmap.domain.User;
+import sniffmap.domain.UserRepository;
 import sniffmap.ex.CustomValidationException;
 import sniffmap.jwt.JwtTokenProvider;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -33,15 +37,15 @@ public class AuthController {
 
     private final AuthenticationManager authenticationManager;
     private final JwtTokenProvider jwtTokenProvider;
-    private CustomUserDetailsService userDetailsService;
+    private final PasswordEncoder passwordEncoder;
+    private final UserRepository userRepository;
     @PostMapping("/auth/signin")
     public String login(@RequestBody SigninFormDto request) {
-        log.info(request.getEmail());
         try {
-            UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword());
+            UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
+                    request.getEmail(), request.getPassword());
             Authentication authentication = authenticationManager.authenticate(token);
-            log.info(authentication.isAuthenticated() + "authentication check");
-            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+            User userDetails = (User) authentication.getPrincipal();
             return jwtTokenProvider.generateToken(userDetails.getUsername());
         } catch (AuthenticationException e) {
             throw new RuntimeException("Invalid login credentials");
@@ -57,9 +61,25 @@ public class AuthController {
 //            }
 //            throw new CustomValidationException("validation check failed.", errorMap);
 //        }
-        User user = signupFormDto.toEntity();
-        User savedUser = userDetailsService.registerUser(user);
-        return ResponseEntity.status(HttpStatus.OK).body("signup succeed, user id: " + user.getId());
+//        User user = signupFormDto.toEntity();
+//        User savedUser = userDetailsService.registerUser(user);
+//        return ResponseEntity.status(HttpStatus.OK).body("signup succeed, user id: " + user.getId());
+//    }
+//
+//    // 사용자 이름 중복 확인
+//        if (userRepository.existsByUsername(signupRequest.getUsername())) {
+//        return ResponseEntity
+//                .badRequest()
+//                .body(new MessageResponse("Error: Username is already taken!"));
+//    }
+
+    // 사용자 객체 생성 및 비밀번호 암호화
+    User user = new User(signupFormDto.getEmail(),
+            passwordEncoder.encode(signupFormDto.getPassword()), signupFormDto.getUsername());
+
+    // 사용자 정보 저장
+        User savedUser = userRepository.save(user);
+        return ResponseEntity.status(HttpStatus.OK).body("signup succeed, user id: " + savedUser.getId() + "encoded password: " + savedUser.getPassword());
     }
 }
 
