@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import sniffmap.domain.User;
-import sniffmap.domain.UserService;
 import sniffmap.ex.CustomValidationException;
 import sniffmap.jwt.JwtTokenProvider;
 
@@ -31,8 +30,6 @@ import java.util.Map;
 @RequiredArgsConstructor
 @RestController
 public class AuthController {
-
-    private final UserService userService;
 
     private final AuthenticationManager authenticationManager;
     private final JwtTokenProvider jwtTokenProvider;
@@ -61,7 +58,7 @@ public class AuthController {
 //            throw new CustomValidationException("validation check failed.", errorMap);
 //        }
         User user = signupFormDto.toEntity();
-        userService.registerUser(user);
+        User savedUser = userDetailsService.registerUser(user);
         return ResponseEntity.status(HttpStatus.OK).body("signup succeed, user id: " + user.getId());
     }
 }

@@ -72,17 +72,10 @@ public class SecurityConfig {
         }));
 
         JwtTokenFilter jwtTokenFilter = new JwtTokenFilter(jwtTokenProvider, customUserDetailsService);
-        http.authorizeHttpRequests((authorize) -> authorize
-
-//                .requestMatchers(
-//                        new AntPathRequestMatcher("/auth/signin"),
-//                        new AntPathRequestMatcher("/auth/signup")).permitAll()
-//                .requestMatchers(
-//                        new AntPathRequestMatcher("/**")).hasAuthority("USER")
+        http.authorizeHttpRequests((authorize) ->
+                authorize
                         .requestMatchers("/", "/auth/signup", "/auth/signin").permitAll()
-                .anyRequest().authenticated()
-
-                    /* 302 error : redirection provoked when try to access this page without USER authority. */
+                        .anyRequest().authenticated()
         ).addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
 
 //        http.formLogin(form -> form
