@@ -21,40 +21,38 @@ public class LocationApiController {
     private final LocationService locationService;
 
     /** Show the list of locations. */
-    @GetMapping("locations")
+    @GetMapping("/locations")
     public List<LocationDto> showLocationsList() {
         return locationService.showLocationsList();
     }
 
     /** Show a location's detail. */
-    @GetMapping("locations/{locationId}")
-    public ResponseEntity<LocationDto> showLocationDetail(@PathVariable Long locationId) {
+    @GetMapping("/locations/{number}")
+    public ResponseEntity<LocationDto> showLocationDetail(@PathVariable Long number) {
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(locationService.showLocationsDetail(locationId));
-        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.OK).body(locationService.showLocationsDetail(number));
+        } catch (IllegalArgumentException e) {
             log.info(e.getMessage());
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
 
     /** Add a new walk location. */
-    @PostMapping("locations")
-    public ResponseEntity<LocationDto> createLocation(@RequestBody @Validated LocationCreateDto locationCreateDto) {
+    @PostMapping("/locations")
+    public ResponseEntity<LocationDto> createLocation(@RequestBody LocationCreateDto locationCreateDto) {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(locationService.createLocation(locationCreateDto));
-        } catch (EntityNotFoundException e1) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        } catch (IllegalArgumentException e2) {
+        } catch (IllegalArgumentException e) {
             return  ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
 
-    @DeleteMapping("locations/{locationId}")
-    public ResponseEntity<LocationDto> deleteLocation(@PathVariable Long locationId) {
+    @DeleteMapping("/locations/{number}")
+    public ResponseEntity<LocationDto> deleteLocation(@PathVariable Long number) {
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(locationService.deleteLocation(locationId));
-        } catch (EntityNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            return ResponseEntity.status(HttpStatus.OK).body(locationService.deleteLocation(number));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
 }

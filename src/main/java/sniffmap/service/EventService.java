@@ -1,10 +1,12 @@
 package sniffmap.service;
 
+import lombok.RequiredArgsConstructor;
 import sniffmap.dto.EventCreateDto;
 import sniffmap.dto.EventDto;
 import sniffmap.dto.EventUpdateDto;
 import sniffmap.entity.Dog;
 import sniffmap.entity.Event;
+import sniffmap.entity.Parent;
 import sniffmap.repository.DogRepository;
 import sniffmap.repository.EventRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -13,20 +15,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import sniffmap.repository.ParentRepository;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
+@RequiredArgsConstructor
 public class EventService {
 
     private final EventRepository eventRepository;
     private final DogRepository dogRepository;
-
-    @Autowired
-    public EventService(EventRepository eventRepository, DogRepository dogRepository) {
-        this.eventRepository = eventRepository;
-        this.dogRepository = dogRepository;
-    }
+    private final ParentRepository parentRepository;
 
     public List<EventDto> showEvents() {
         return eventRepository.findAll().stream().map(EventDto::fromEntity).toList();
@@ -75,5 +75,18 @@ public class EventService {
         Event target = eventRepository.findById(eventId).orElseThrow(EntityNotFoundException::new);
         eventRepository.delete(target);
         return EventDto.fromEntity(target);
+    }
+
+    public void validateOrganizingEvent(String username, Long eventNumber) {
+        Parent parent = parentRepository.findByUsername(username).orElseThrow(IllegalArgumentException::new);
+        boolean containsEvent = false;
+        for (Event event : parent.getOrganizingEvents()) {
+            if (event.getNumber().equals(eventNumber)) {
+                containsEvent = true;
+            }
+        }
+        if (!containsEvent) {
+            throw new IllegalArgumentException();
+        }
     }
 }

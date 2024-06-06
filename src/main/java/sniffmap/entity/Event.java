@@ -16,7 +16,7 @@ import java.util.Set;
 public class Event {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    Long number;
     @Column(nullable = false)
     Long date;
     @Column(nullable = false)
@@ -29,14 +29,14 @@ public class Event {
     @ManyToOne(optional = true)
     @JoinColumn // (nullable = false)
             @JsonIgnore
-    Dog organizerDog;
+    Parent organizer;
 
     @ManyToMany(mappedBy = "participatingEvents")
     @JsonIgnore
     Set<Dog> participantDogs;
 
     public Event(Long id, Long date, Long time, Double latitude, Double longitude) {
-        this.id = id;
+        this.number = id;
         this.date = date;
         this.time = time;
         this.latitude = latitude;

@@ -34,8 +34,6 @@ public class Dog {
     Set<Dog> friends;
     @Column
     Integer happinessPoints;
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "organizerDog", cascade = CascadeType.REMOVE)
-    Set<Event> organizingEvents;
     @ManyToMany(fetch = FetchType.EAGER)
     Set<Event> participatingEvents;
     @ManyToMany(fetch = FetchType.EAGER)

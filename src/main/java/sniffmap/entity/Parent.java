@@ -24,6 +24,8 @@ public class Parent {
     String email;
     @OneToMany(mappedBy = "parent", cascade = CascadeType.REMOVE, orphanRemoval = true)
     Set<Dog> dogs;
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "organizer", cascade = CascadeType.REMOVE)
+    Set<Event> organizingEvents;
     Long ownerPoints;
 
 //    public Parent(String email, String username) {

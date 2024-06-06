@@ -30,7 +30,7 @@ public class DogApiController {
 //    }
 
     /** Show a dog's profile. */
-    @GetMapping("dogs/{number}")
+    @GetMapping("/dogs/{number}")
     public ResponseEntity<DogDto> showDogProfile(@AuthenticationPrincipal CustomUserDetails customUserDetails, @PathVariable Long dogNumber) {
         try {
             dogService.validateUserDog(customUserDetails.getUsername(), dogNumber);
@@ -41,7 +41,7 @@ public class DogApiController {
     }
 
     /** Register a new dog profile. */
-    @PostMapping("dogs")
+    @PostMapping("/dogs")
     public ResponseEntity<DogDto> registerDogProfile(@AuthenticationPrincipal CustomUserDetails customUserDetails, @RequestBody DogRegistrationDto dogRegistrationDto) {
        try {
            if (!customUserDetails.getUsername().equals(dogRegistrationDto.getParentName())) {
@@ -55,7 +55,7 @@ public class DogApiController {
     }
 
     /** Update some basic fields of a dog's profile. Can't update organizing/participating events, dog friends, or happiness points. */
-    @PatchMapping("dogs/{number}")
+    @PatchMapping("/dogs/{number}")
     public ResponseEntity<DogDto> updateDogProfile(@AuthenticationPrincipal CustomUserDetails customUserDetails, @PathVariable Long dogNumber, @RequestBody DogUpdateDto dogUpdateDto) {
         try {
             dogService.validateUserDog(customUserDetails.getUsername(), dogNumber);
@@ -66,7 +66,7 @@ public class DogApiController {
         }
     }
     /** Delete a dog's profile. */
-    @DeleteMapping("dogs/{number}")
+    @DeleteMapping("/dogs/{number}")
     public ResponseEntity<DogDto> deleteDogProfile(@AuthenticationPrincipal CustomUserDetails customUserDetails, @PathVariable Long dogNumber) {
         try {
             dogService.validateUserDog(customUserDetails.getUsername(), dogNumber);
@@ -77,7 +77,7 @@ public class DogApiController {
     }
 
     /** A dog joins an event. */
-    @PatchMapping("dogs/{number}/events")
+    @PatchMapping("/dogs/{number}/events")
     public ResponseEntity<DogDto> joinEvent(@AuthenticationPrincipal CustomUserDetails customUserDetails, @PathVariable Long dogNumber, @RequestBody Long eventNumber) {
         try {
             dogService.validateUserDog(customUserDetails.getUsername(), dogNumber);
@@ -89,7 +89,7 @@ public class DogApiController {
         }
     }
 
-    @PatchMapping("dogs/{number}/events")
+    @PatchMapping("/dogs/{number}/events")
     public ResponseEntity<DogDto> cancelEvent(@AuthenticationPrincipal CustomUserDetails customUserDetails, @PathVariable Long dogNumber, @RequestBody Long eventNumber) {
         try {
             dogService.validateUserDog(customUserDetails.getUsername(), dogNumber);
@@ -101,7 +101,7 @@ public class DogApiController {
         }
     }
 
-    @PatchMapping("dogs/{number}/events")
+    @PatchMapping("/dogs/{number}/events")
     public  ResponseEntity<LocationDto> joinLocation(@AuthenticationPrincipal CustomUserDetails customUserDetails, @PathVariable Long dogNumber, @RequestBody Long locationNumber) {
         try {
             dogService.validateUserDog(customUserDetails.getUsername(), dogNumber);
@@ -114,7 +114,7 @@ public class DogApiController {
     }
 
     /** Show all dog friends of a dog. */
-    @GetMapping("dogs/{dogId}/friends")
+    @GetMapping("/dogs/{dogId}/friends")
     public ResponseEntity<List<DogDto>> showFriends(@PathVariable Long dogId) {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(this.dogService.showFriends(dogId));
@@ -125,7 +125,7 @@ public class DogApiController {
     }
 
     /** Make friends for two dogs. */
-    @PostMapping("dogs/{number}/friends")
+    @PostMapping("/dogs/{number}/friends")
     public ResponseEntity<DogDto> makeFriends(@AuthenticationPrincipal CustomUserDetails customUserDetails, @PathVariable Long dogNumber, @RequestBody Long friendNumber) {
         try {
             dogService.validateUserDog(customUserDetails.getUsername(), dogNumber);
@@ -135,7 +135,7 @@ public class DogApiController {
         }
     }
 
-    @PatchMapping("dogs/{number}/friends")
+    @PatchMapping("/dogs/{number}/friends")
     public ResponseEntity<DogDto> cancelFriends(@AuthenticationPrincipal CustomUserDetails customUserDetails, @PathVariable Long dogNumber, @RequestBody Long friendNumber) {
         try {
             dogService.validateUserDog(customUserDetails.getUsername(), dogNumber);

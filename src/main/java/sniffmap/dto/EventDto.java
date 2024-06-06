@@ -51,7 +51,7 @@ public class EventDto {
         } else {
             participantDogIds = event.getParticipantDogs().stream().map(Dog::getNumber).collect(Collectors.toSet());
         }
-        return new EventDto(event.getId(), event.getDate(), event.getTime(), event.getLatitude(), event.getLongitude(), participantDogIds);
+        return new EventDto(event.getNumber(), event.getDate(), event.getTime(), event.getLatitude(), event.getLongitude(), participantDogIds);
     }
     public Event toEntity() {
         return new Event(this.getId(), this.getDate(), this.getTime(), this.getLatitude(), this.getLongitude());

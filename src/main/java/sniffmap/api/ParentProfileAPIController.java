@@ -17,7 +17,7 @@ public class ParentProfileAPIController {
 
     private final ParentProfileService parentProfileService;
 
-    @GetMapping("my/profile")
+    @GetMapping("/my/profile")
     public ResponseEntity<ParentDto> showProfile(@AuthenticationPrincipal CustomUserDetails customUserDetails) {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(parentProfileService.showProfile(customUserDetails.getUsername()));
@@ -26,7 +26,7 @@ public class ParentProfileAPIController {
         }
     }
 
-    @PostMapping("my/profile")
+    @PostMapping("/my/profile")
     public ResponseEntity<ParentDto> registerProfile(@AuthenticationPrincipal CustomUserDetails customUserDetails) {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(parentProfileService.registerProfile(customUserDetails));
@@ -35,7 +35,7 @@ public class ParentProfileAPIController {
         }
     }
 
-    @DeleteMapping("my/profile")
+    @DeleteMapping("/my/profile")
     public ResponseEntity<ParentDto> deleteProfile(@AuthenticationPrincipal CustomUserDetails customUserDetails) {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(parentProfileService.deleteProfile(customUserDetails.getUsername()));

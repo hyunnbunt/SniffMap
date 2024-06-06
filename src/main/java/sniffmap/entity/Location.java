@@ -17,7 +17,7 @@ import java.util.Set;
 public class Location {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    Long number;
     @Column(nullable = false)
     Double latitude;
     @Column(nullable = false)
