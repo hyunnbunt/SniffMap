@@ -49,7 +49,7 @@ public class EventDto {
         if (event.getParticipantDogs() == null) {
             participantDogIds = null;
         } else {
-            participantDogIds = event.getParticipantDogs().stream().map(Dog::getId).collect(Collectors.toSet());
+            participantDogIds = event.getParticipantDogs().stream().map(Dog::getNumber).collect(Collectors.toSet());
         }
         return new EventDto(event.getId(), event.getDate(), event.getTime(), event.getLatitude(), event.getLongitude(), participantDogIds);
     }

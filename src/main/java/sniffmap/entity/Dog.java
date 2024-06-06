@@ -18,10 +18,10 @@ public class Dog {
     @Column
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    Long number;
     @ManyToOne
     @JoinColumn(nullable = false)
-    Owner owner;
+    Parent parent;
     @Column
     String name;
     @Column
@@ -41,21 +41,12 @@ public class Dog {
     @ManyToMany(fetch = FetchType.EAGER)
     Set<Location> walkLocations;
 
-    public Dog(Owner owner, String name, Double age, Double weight, String sex) {
-        this.owner = owner;
+    public Dog(Parent parent, String name, Double age, Double weight, String sex) {
+        this.parent = parent;
         this.name = name;
         this.age = age;
         this.weight = weight;
         this.sex = sex;
-    }
-
-
-    @Override
-    public String toString() {
-        return "Dog{" +
-                "owner=" + owner.getName() +
-                ", name='" + name + '\'' +
-                '}';
     }
 
     public boolean addEvent(Event targetEvent) {
@@ -88,4 +79,5 @@ public class Dog {
         return this.getWalkLocations().add(location);
     }
 
+    public boolean cancelLocation(Location location) { return this.getWalkLocations().remove(location);}
 }

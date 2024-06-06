@@ -3,8 +3,6 @@ package sniffmap.dto;
 import sniffmap.entity.Dog;
 import sniffmap.entity.Event;
 import sniffmap.entity.Location;
-import sniffmap.entity.Owner;
-import sniffmap.service.OwnerService;
 import lombok.*;
 import org.jetbrains.annotations.NotNull;
 
@@ -26,7 +24,8 @@ public class DogDto {
     String sex;
     Set<Long> participatingEventIds;
     Set<Long> walkingLocationIds;
-    Set<Long> friendIds;
+//    Set<Long> friendIds;
+    Set<FriendDto> friends;
 
     public DogDto(Long ownerId, String name, Double age, Double weight, String sex) {
         this.ownerId = ownerId;
@@ -46,23 +45,24 @@ public class DogDto {
                 ", sex='" + this.sex + '\'';
     }
 
-    public Dog toEntity(OwnerService ownerService) throws IllegalArgumentException {
-
-        if (this.ownerId == null) {
-            throw new IllegalArgumentException("Owner id is required.");
-        }
-        Owner dogsOwner = ownerService.getOwner(this.ownerId);
-        if (dogsOwner == null) {
-            throw new IllegalArgumentException("Can't find the owner.");
-        }
-        return Dog.builder()
-                .id(this.getId())
-                .owner(dogsOwner)
-                .name(this.getName())
-                .age(this.getAge())
-                .weight(this.getWeight())
-                .sex(this.getSex())
-                .build();
+//    public Dog toEntity(OwnerService ownerService) throws IllegalArgumentException {
+//
+//        if (this.ownerId == null) {
+//            throw new IllegalArgumentException("Owner id is required.");
+//        }
+//        Owner dogsOwner = ownerService.getOwner(this.ownerId);
+//        if (dogsOwner == null) {
+//            throw new IllegalArgumentException("Can't find the owner.");
+//        }
+//        return Dog.builder()
+//                .id(this.getId())
+//                .owner(dogsOwner)
+//                .name(this.getName())
+//                .age(this.getAge())
+//                .weight(this.getWeight())
+//                .sex(this.getSex())
+//                .friends(this.getFriends().stream().map(Dog::fromDto).collect(Collectors.toSet()))
+//                .build();
 //        Dog dogEntity = new Dog();
 //        dogEntity.setId(this.id);
 //        dogEntity.setOwner(dogsOwner);
@@ -76,11 +76,11 @@ public class DogDto {
         // always null when this method is executed :
         // can't join an event while creating new dog profile.
 //        return dogEntity;
-    }
+//    }
 
     public static DogDto fromEntity(Dog dog) {
         return DogDto.builder()
-                .id(dog.getId())
+                .id(dog.getNumber())
                 .ownerId(dog.getOwner().getId())
                 .name(dog.getName())
                 .age(dog.getAge())
@@ -88,7 +88,7 @@ public class DogDto {
                 .sex(dog.getSex())
                 .participatingEventIds(dog.getParticipatingEvents().stream().map(Event::getId).collect(Collectors.toSet()))
                 .walkingLocationIds(dog.getWalkLocations().stream().map(Location::getId).collect(Collectors.toSet()))
-                .friendIds(dog.getFriends().stream().map(Dog::getId).collect(Collectors.toSet()))
+                .friends(dog.getFriends().stream().map(FriendDto::fromEntity).collect(Collectors.toSet()))
                 .build();
 //        DogDto dogDto = new DogDto();
 //        dogDto.setId(dog.getId());

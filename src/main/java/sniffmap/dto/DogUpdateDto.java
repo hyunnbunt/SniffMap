@@ -12,6 +12,7 @@ import lombok.Setter;
 @Getter
 public class DogUpdateDto {
 
+    Long number;
     String name;
     Double age;
     Double weight;

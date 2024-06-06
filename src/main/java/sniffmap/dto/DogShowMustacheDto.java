@@ -1,7 +1,7 @@
 package sniffmap.dto;
 
 import sniffmap.entity.Owner;
-import sniffmap.service.OwnerService;
+import sniffmap.service.ParentProfileService;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -19,19 +19,19 @@ public class DogShowMustacheDto {
     Double age;
     Double weight;
     String sex;
-    static OwnerService ownerService;
+    static ParentProfileService parentProfileService;
 
     @Autowired
-    public DogShowMustacheDto(OwnerService ownerService) {
-        DogShowMustacheDto.ownerService = ownerService;
+    public DogShowMustacheDto(ParentProfileService parentProfileService) {
+        DogShowMustacheDto.parentProfileService = parentProfileService;
     }
     public static DogShowMustacheDto fromDogProfileDto(DogDto dogDto) {
         Long dogsOwnerId = dogDto.getOwnerId();
-        Owner owner = ownerService.getOwner(dogsOwnerId);
+        Owner owner = parentProfileService.getOwner(dogsOwnerId);
 
         DogShowMustacheDto dogShowMustacheDto = new DogShowMustacheDto();
         dogShowMustacheDto.setId(dogDto.getId());
-        dogShowMustacheDto.setDogsOwnerName(owner.getName());
+        dogShowMustacheDto.setDogsOwnerName(owner.getEmail());
         dogShowMustacheDto.setName(dogDto.getName());
         dogShowMustacheDto.setAge(dogDto.getAge());
         dogShowMustacheDto.setWeight(dogDto.getWeight());

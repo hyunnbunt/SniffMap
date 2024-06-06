@@ -1,9 +1,9 @@
 package sniffmap.domain;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -14,32 +14,36 @@ import java.util.Collections;
 @Entity
 @NoArgsConstructor
 @Getter
-public class User implements UserDetails, Serializable {
+@ToString
+public class CustomUserDetails implements UserDetails, Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long number;
     @Column(length = 10, unique = true)
     private String username;
     @Column(nullable = false, unique = true)
     private String email;
-    @Column(nullable = false)
+    @Column(nullable = false)  //@Column은 기본적으로 nullable이 true
     private String password;
-    @Column
+    @Column(nullable = false)
     private Collection<GrantedAuthority> authorities;	//권한 목록
+    @Column(nullable = false)
     private boolean accountNonExpired;
+    @Column(nullable = false)
     private boolean accountNonLocked;
+    @Column(nullable = false)
     private boolean credentialsNonExpired;
+    @Column(nullable = false)
     private boolean enabled;
-
 //    @ManyToMany(fetch = FetchType.EAGER)
 //    @JoinTable(
 //            name = "users_roles",
-//            joinColumns = @JoinColumn(name = "user_id"),
-//            inverseJoinColumns = @JoinColumn(name = "role_id")
+//            joinColumns = @JoinColumn(name = "user_number"),
+//            inverseJoinColumns = @JoinColumn(name = "role_number")
 //    )
 //    private Collection<Role> roles;
 
-    public User(String email, String password, String username) {
+    public CustomUserDetails(String email, String password, String username) {
         this.email = email;
         this.password = password;
         this.username = username;

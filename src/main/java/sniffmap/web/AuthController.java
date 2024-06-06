@@ -1,9 +1,6 @@
 package sniffmap.web;
 
-import jakarta.validation.Valid;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,20 +8,17 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import sniffmap.domain.User;
-import sniffmap.domain.User;
+import sniffmap.domain.CustomUserDetails;
 import sniffmap.domain.UserRepository;
-import sniffmap.ex.CustomValidationException;
+import sniffmap.dto.ParentDto;
 import sniffmap.jwt.JwtTokenProvider;
+import sniffmap.service.ParentProfileService;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -39,14 +33,33 @@ public class AuthController {
     private final JwtTokenProvider jwtTokenProvider;
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
+    private final ParentProfileService parentProfileService;
+
+    @GetMapping("/login")
+    public ResponseEntity<ParentDto> showParentProfile(@AuthenticationPrincipal CustomUserDetails customUserDetails) {
+        try {
+            ParentDto parentDto = parentProfileService.showProfile(customUserDetails.getUsername());
+            if (parentDto == null) {
+                parentDto = parentProfileService.registerProfile(customUserDetails);
+                log.info("New Owner entity created with id: " + parentDto.getNumber());
+            } else {
+                log.info("Already registered owner with id: " + parentDto.getUsername());
+            }
+            ParentDto savedParentDto = parentProfileService.registerProfile(customUserDetails);
+            log.info(savedParentDto.toString());
+            return ResponseEntity.status(HttpStatus.OK).body(savedParentDto);
+        } catch(Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+    }
     @PostMapping("/auth/signin")
     public ResponseEntity<?> login(@RequestBody SigninFormDto request) {
         try {
             UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
                     request.getEmail(), request.getPassword(), Collections.emptyList());
             Authentication authentication = authenticationManager.authenticate(token);
-            User userDetails = (User) authentication.getPrincipal();
-            String jwt = jwtTokenProvider.generateToken(userDetails.getUsername());
+            CustomUserDetails customUserDetailsDetails = (CustomUserDetails) authentication.getPrincipal();
+            String jwt = jwtTokenProvider.generateToken(customUserDetailsDetails.getUsername());
             Map<String, String> tokenMap = new HashMap<>();
             tokenMap.put("token", jwt);
             return ResponseEntity.status(HttpStatus.OK).body(tokenMap);
@@ -78,12 +91,12 @@ public class AuthController {
 //    }
 
     // 사용자 객체 생성 및 비밀번호 암호화
-    User user = new User(signupFormDto.getEmail(),
+    CustomUserDetails customUserDetails = new CustomUserDetails(signupFormDto.getEmail(),
             passwordEncoder.encode(signupFormDto.getPassword()), signupFormDto.getUsername());
 
     // 사용자 정보 저장
-        User savedUser = userRepository.save(user);
-        return ResponseEntity.status(HttpStatus.OK).body("signup succeed, user id: " + savedUser.getId() + "encoded password: " + savedUser.getPassword());
+        CustomUserDetails savedCustomUserDetails = userRepository.save(customUserDetails);
+        return ResponseEntity.status(HttpStatus.OK).body("signup succeed, user number: " + savedCustomUserDetails.getNumber() + "encoded password: " + savedCustomUserDetails.getPassword());
     }
 }
 

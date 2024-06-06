@@ -8,11 +8,11 @@ import org.jetbrains.annotations.NotNull;
 @NoArgsConstructor
 @Setter
 @Getter
-public class DogCreateDto {
+public class DogRegistrationDto {
     @NotNull
-    Long ownerId;
+    String parentName;
     @NotNull
-    String name;
+    String dogName;
     Double age;
     Double weight;
     String sex;

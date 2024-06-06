@@ -2,7 +2,7 @@ package sniffmap.web;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import sniffmap.domain.User;
+import sniffmap.domain.CustomUserDetails;
 import sniffmap.domain.UserRepository;
 
 @RequiredArgsConstructor
@@ -10,8 +10,8 @@ import sniffmap.domain.UserRepository;
 public class AuthService {
     private final UserRepository userRepository;
 
-    public User signup(User user) {
-        return userRepository.save(user);
+    public CustomUserDetails signup(CustomUserDetails customUserDetails) {
+        return userRepository.save(customUserDetails);
     }
-    public User getUser(String email) {return userRepository.findByEmail(email).orElseThrow();}
+    public CustomUserDetails getUser(String email) {return userRepository.findByEmail(email).orElseThrow();}
 }

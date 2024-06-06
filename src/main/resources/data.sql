@@ -1,10 +1,10 @@
 
-insert into owner(name) values('Junseok');
-insert into owner(name) values('Hyuna');
-insert into owner(name) values('Kat');
-insert into owner(name) values('Jiwook');
-insert into owner(name) values('Chih');
-insert into owner(name) values('Danbi');
+insert into owner(email) values('junseok@gmail.com');
+insert into owner(email) values('hyuna@gmail.com');
+insert into owner(email) values('kat@gmail.com');
+insert into owner(email) values('jiwook@gmail.com');
+insert into owner(email) values('chih@gmail.com');
+insert into owner(email) values('danbi@gmail.com');
 
 insert into dog(owner_id, name, weight, age, sex) values(1, 'Lana', 3.0, 10, 'female');
 insert into dog(owner_id, name, weight, age, sex) values(2, 'Bunt', 6.2, 4, 'male');
@@ -18,7 +18,7 @@ insert into event(date, time, latitude, longitude) values(20231101, 2050, 11.11,
 
 insert into location(latitude, longitude) values(111.1, 222.2);
 insert into location(latitude, longitude) values(222.1, 111.1);
---
---
---insert into dog_friends(dog_id, friends_id) values(1, 2);
---insert into dog_friends(dog_id, friends_id) values(2, 1);
+
+
+insert into dog_friends(dog_id, friends_id) values(1, 2);
+insert into dog_friends(dog_id, friends_id) values(2, 1);

@@ -27,7 +27,7 @@ public class LocationDto {
         locationDto.setLongitude(updatedLocation.getLongitude());
         Set<Dog> walkingDogs = updatedLocation.getWalkingDogs();
         locationDto.setWalkingDogIds(
-                walkingDogs.stream().map(Dog::getId).
+                walkingDogs.stream().map(Dog::getNumber).
                         collect(Collectors.toSet())
         );
         return locationDto;
