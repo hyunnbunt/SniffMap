@@ -40,14 +40,18 @@ public class AuthController {
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
     @PostMapping("/auth/signin")
-    public String login(@RequestBody SigninFormDto request) {
+    public ResponseEntity<?> login(@RequestBody SigninFormDto request) {
         try {
             UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
-                    request.getEmail(), request.getPassword());
+                    request.getEmail(), request.getPassword(), Collections.emptyList());
             Authentication authentication = authenticationManager.authenticate(token);
             User userDetails = (User) authentication.getPrincipal();
-            return jwtTokenProvider.generateToken(userDetails.getUsername());
+            String jwt = jwtTokenProvider.generateToken(userDetails.getUsername());
+            Map<String, String> tokenMap = new HashMap<>();
+            tokenMap.put("token", jwt);
+            return ResponseEntity.status(HttpStatus.OK).body(tokenMap);
         } catch (AuthenticationException e) {
+            log.info(e.getMessage());
             throw new RuntimeException("Invalid login credentials");
         }
     }

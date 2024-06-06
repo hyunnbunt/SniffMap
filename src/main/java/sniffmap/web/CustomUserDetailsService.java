@@ -11,7 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sniffmap.domain.User;
-import sniffmap.domain.Role;
+//import sniffmap.domain.Role;
 import sniffmap.domain.User;
 import sniffmap.domain.UserRepository;
 
@@ -45,9 +45,11 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         log.info("inside loadUserByUsername, username: " + username);
-        return userRepository.findByEmail(username)
+        UserDetails user = userRepository.findByEmail(username)
                 .orElseThrow(() ->
                         new UsernameNotFoundException("User not found with username: " + username));
+        log.info(user.toString());
+        return user;
     }
 
 }
