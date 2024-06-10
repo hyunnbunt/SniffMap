@@ -10,6 +10,6 @@ import lombok.ToString;
 @Data
 @ToString
 public class SigninFormDto {
-    private String email;
+    private String username;
     private String password;
 }

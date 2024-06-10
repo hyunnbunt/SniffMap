@@ -10,9 +10,7 @@ import org.jetbrains.annotations.NotNull;
 @Getter
 public class DogRegistrationDto {
     @NotNull
-    String parentName;
-    @NotNull
-    String dogName;
+    String name;
     Double age;
     Double weight;
     String sex;

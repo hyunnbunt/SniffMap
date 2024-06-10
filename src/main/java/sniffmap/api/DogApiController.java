@@ -2,7 +2,6 @@ package sniffmap.api;
 
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import sniffmap.domain.CustomUserDetails;
-import sniffmap.repository.ParentRepository;
 import sniffmap.service.DogService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +19,6 @@ import java.util.List;
 public class DogApiController {
 
     private final DogService dogService;
-    private final ParentRepository parentRepository;
 
 //    /** Show all dogs nearby. */
 //    @GetMapping("dogs")
@@ -44,10 +42,7 @@ public class DogApiController {
     @PostMapping("/dogs")
     public ResponseEntity<DogDto> registerDogProfile(@AuthenticationPrincipal CustomUserDetails customUserDetails, @RequestBody DogRegistrationDto dogRegistrationDto) {
        try {
-           if (!customUserDetails.getUsername().equals(dogRegistrationDto.getParentName())) {
-               return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-           }
-           return ResponseEntity.status(HttpStatus.OK).body(dogService.registerDogProfile(dogRegistrationDto));
+           return ResponseEntity.status(HttpStatus.OK).body(dogService.registerDogProfile(customUserDetails.getUsername(), dogRegistrationDto));
        } catch (IllegalArgumentException e) {
            log.info(e.getMessage());
            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
@@ -77,7 +72,7 @@ public class DogApiController {
     }
 
     /** A dog joins an event. */
-    @PatchMapping("/dogs/{number}/events")
+    @PatchMapping("/dogs/{number}/events/join")
     public ResponseEntity<DogDto> joinEvent(@AuthenticationPrincipal CustomUserDetails customUserDetails, @PathVariable Long dogNumber, @RequestBody Long eventNumber) {
         try {
             dogService.validateUserDog(customUserDetails.getUsername(), dogNumber);
@@ -89,7 +84,7 @@ public class DogApiController {
         }
     }
 
-    @PatchMapping("/dogs/{number}/events")
+    @PatchMapping("/dogs/{number}/events/cancel")
     public ResponseEntity<DogDto> cancelEvent(@AuthenticationPrincipal CustomUserDetails customUserDetails, @PathVariable Long dogNumber, @RequestBody Long eventNumber) {
         try {
             dogService.validateUserDog(customUserDetails.getUsername(), dogNumber);

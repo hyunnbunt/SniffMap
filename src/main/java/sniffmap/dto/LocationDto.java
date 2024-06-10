@@ -22,7 +22,7 @@ public class LocationDto {
 
     public static LocationDto fromEntity(Location updatedLocation) {
         LocationDto locationDto = new LocationDto();
-        locationDto.setId(updatedLocation.getId());
+        locationDto.setId(updatedLocation.getNumber());
         locationDto.setLatitude(updatedLocation.getLatitude());
         locationDto.setLongitude(updatedLocation.getLongitude());
         Set<Dog> walkingDogs = updatedLocation.getWalkingDogs();

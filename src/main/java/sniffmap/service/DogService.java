@@ -42,8 +42,8 @@ public class DogService {
     }
 
     @Transactional
-    public DogDto registerDogProfile(@RequestBody DogRegistrationDto dogRegistrationDto) {
-        Dog dog = this.toEntity(dogRegistrationDto);
+    public DogDto registerDogProfile(String username, @RequestBody DogRegistrationDto dogRegistrationDto) {
+        Dog dog = this.toEntity(username, dogRegistrationDto);
         Dog created = dogRepository.save(dog);
         return DogDto.fromEntity(created);
     }
@@ -94,14 +94,18 @@ public class DogService {
     }
 
     /** Convert a DogCreateDto instance to a Dog instance. Used in createDog method. */
-    private Dog toEntity(DogRegistrationDto dogCreateDto) {
-        Parent parent = parentRepository.findByUsername(dogCreateDto.getParentName()).orElseThrow();
+    private Dog toEntity(String username, DogRegistrationDto dogRegistrationDto) {
+        Parent parent = parentRepository.findByUsername(username).orElseThrow();
         return Dog.builder()
                 .parent(parent)
-                .name(dogCreateDto.getParentName())
-                .age(dogCreateDto.getAge())
-                .weight(dogCreateDto.getWeight())
-                .sex(dogCreateDto.getSex()).build();
+                .name(dogRegistrationDto.getName())
+                .age(dogRegistrationDto.getAge())
+                .weight(dogRegistrationDto.getWeight())
+                .sex(dogRegistrationDto.getSex())
+                .participatingEvents(new HashSet<>())
+                .walkLocations(new HashSet<>())
+                .happinessPoints(0)
+                .friends(new HashSet<>()).build();
     }
 
     @Transactional

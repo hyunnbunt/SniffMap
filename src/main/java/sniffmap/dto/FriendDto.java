@@ -28,7 +28,7 @@ public class FriendDto {
                 .age(dog.getAge())
                 .weight(dog.getWeight())
                 .sex(dog.getSex())
-                .participatingEventIds(dog.getParticipatingEvents().stream().map(Event::getId).collect(Collectors.toSet()))
-                .walkingLocationIds(dog.getWalkLocations().stream().map(Location::getId).collect(Collectors.toSet())).build();
+                .participatingEventIds(dog.getParticipatingEvents().stream().map(Event::getNumber).collect(Collectors.toSet()))
+                .walkingLocationIds(dog.getWalkLocations().stream().map(Location::getNumber).collect(Collectors.toSet())).build();
     }
 }

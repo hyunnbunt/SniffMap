@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 public class DogDto {
     @NotNull
     Long id;
-    Long ownerId;
+    String parentName;
     String name;
     Double age;
     Double weight;
@@ -27,8 +27,8 @@ public class DogDto {
 //    Set<Long> friendIds;
     Set<FriendDto> friends;
 
-    public DogDto(Long ownerId, String name, Double age, Double weight, String sex) {
-        this.ownerId = ownerId;
+    public DogDto(String parentName, String name, Double age, Double weight, String sex) {
+        this.parentName = parentName;
         this.name = name;
         this.age = age;
         this.weight = weight;
@@ -38,7 +38,7 @@ public class DogDto {
     @Override
     public String toString() {
         return "DogProfileDto{" +
-                "dogsOwnerId=" + this.ownerId +
+                "dogsOwnerId=" + this.parentName +
                 ", name='" + this.name + '\'' +
                 ", age=" + this.age +
                 ", weight=" + this.weight +
@@ -81,13 +81,13 @@ public class DogDto {
     public static DogDto fromEntity(Dog dog) {
         return DogDto.builder()
                 .id(dog.getNumber())
-                .ownerId(dog.getOwner().getId())
+                .parentName(dog.getParent().getUsername())
                 .name(dog.getName())
                 .age(dog.getAge())
                 .weight(dog.getWeight())
                 .sex(dog.getSex())
-                .participatingEventIds(dog.getParticipatingEvents().stream().map(Event::getId).collect(Collectors.toSet()))
-                .walkingLocationIds(dog.getWalkLocations().stream().map(Location::getId).collect(Collectors.toSet()))
+                .participatingEventIds(dog.getParticipatingEvents().stream().map(Event::getNumber).collect(Collectors.toSet()))
+                .walkingLocationIds(dog.getWalkLocations().stream().map(Location::getNumber).collect(Collectors.toSet()))
                 .friends(dog.getFriends().stream().map(FriendDto::fromEntity).collect(Collectors.toSet()))
                 .build();
 //        DogDto dogDto = new DogDto();

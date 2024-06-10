@@ -13,5 +13,5 @@ public class AuthService {
     public CustomUserDetails signup(CustomUserDetails customUserDetails) {
         return userRepository.save(customUserDetails);
     }
-    public CustomUserDetails getUser(String email) {return userRepository.findByEmail(email).orElseThrow();}
+    public CustomUserDetails getUser(String email) {return userRepository.findByUsername(email).orElseThrow();}
 }

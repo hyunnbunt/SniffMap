@@ -35,30 +35,31 @@ public class AuthController {
     private final UserRepository userRepository;
     private final ParentProfileService parentProfileService;
 
-    @GetMapping("/login")
-    public ResponseEntity<ParentDto> showParentProfile(@AuthenticationPrincipal CustomUserDetails customUserDetails) {
+    @GetMapping("/my")
+    public ResponseEntity<ParentDto> showUserProfile(@AuthenticationPrincipal CustomUserDetails customUserDetails) {
         try {
             ParentDto parentDto = parentProfileService.showProfile(customUserDetails.getUsername());
             if (parentDto == null) {
                 parentDto = parentProfileService.registerProfile(customUserDetails);
-                log.info("New Owner entity created with id: " + parentDto.getNumber());
+                log.info("New Parent entity created with id: " + parentDto.getNumber());
             } else {
-                log.info("Already registered owner with id: " + parentDto.getUsername());
+                log.info("Already registered parent with id: " + parentDto.getUsername());
             }
-            ParentDto savedParentDto = parentProfileService.registerProfile(customUserDetails);
-            log.info(savedParentDto.toString());
-            return ResponseEntity.status(HttpStatus.OK).body(savedParentDto);
+            log.info(parentDto.toString());
+            return ResponseEntity.status(HttpStatus.OK).body(parentDto);
         } catch(Exception e) {
+            log.info(e.getMessage());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
-    @PostMapping("/auth/signin")
+    @PostMapping("/auth/login")
     public ResponseEntity<?> login(@RequestBody SigninFormDto request) {
         try {
             UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
-                    request.getEmail(), request.getPassword(), Collections.emptyList());
+                    request.getUsername(), request.getPassword(), Collections.emptyList());
             Authentication authentication = authenticationManager.authenticate(token);
             CustomUserDetails customUserDetailsDetails = (CustomUserDetails) authentication.getPrincipal();
+            log.info("/auth/login: username - " + customUserDetailsDetails.getUsername());
             String jwt = jwtTokenProvider.generateToken(customUserDetailsDetails.getUsername());
             Map<String, String> tokenMap = new HashMap<>();
             tokenMap.put("token", jwt);

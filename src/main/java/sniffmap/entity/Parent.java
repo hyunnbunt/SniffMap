@@ -20,7 +20,7 @@ public class Parent {
     Long number;
     @Column(nullable = false, unique = true) // @Column 어노테이션이 없으면 이 컬럼 옵션이 nullable = false가 됨
     String username;
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     String email;
     @OneToMany(mappedBy = "parent", cascade = CascadeType.REMOVE, orphanRemoval = true)
     Set<Dog> dogs;

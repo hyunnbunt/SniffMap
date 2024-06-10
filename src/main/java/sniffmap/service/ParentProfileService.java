@@ -24,9 +24,13 @@ public class ParentProfileService {
     private final ParentRepository parentRepository;
     private final DogRepository dogRepository;
 
-    public ParentDto showProfile(String username) throws EntityNotFoundException {
-        Parent parent = parentRepository.findByUsername(username).orElseThrow(EntityNotFoundException::new);
-        return ParentDto.fromEntity(parent);
+    public ParentDto showProfile(String username) {
+        try {
+            Parent parent = parentRepository.findByUsername(username).orElseThrow(IllegalArgumentException::new);
+            return ParentDto.fromEntity(parent);
+        } catch(IllegalArgumentException e) {
+            return null;
+        }
     }
 
     @Transactional

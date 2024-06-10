@@ -27,7 +27,7 @@
 //    }
 //    public static DogShowMustacheDto fromDogProfileDto(DogDto dogDto) {
 //        Long dogsOwnerId = dogDto.getOwnerId();
-//        Owner owner = parentProfileService.getOwner(dogsOwnerId);
+//        Parent parent = parentProfileService.(dogsOwnerId);
 //
 //        DogShowMustacheDto dogShowMustacheDto = new DogShowMustacheDto();
 //        dogShowMustacheDto.setId(dogDto.getId());

@@ -86,7 +86,7 @@ public class SecurityConfig {
         JwtTokenFilter jwtTokenFilter = new JwtTokenFilter(jwtTokenProvider, customUserDetailsService);
         http.authorizeHttpRequests((authorize) ->
                 authorize
-                        .requestMatchers("/", "/auth/signup", "/auth/signin").permitAll()
+                        .requestMatchers("/", "/auth/signup", "/auth/login").permitAll()
                         .anyRequest().authenticated()
         ).addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
 

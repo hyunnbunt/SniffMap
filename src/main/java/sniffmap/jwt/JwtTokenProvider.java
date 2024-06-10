@@ -40,7 +40,7 @@ public class JwtTokenProvider {
         return Keys.hmacShaKeyFor(KeyBytes);
     }
 
-    public String getEmail(String jwtToken) {
+    public String getUsername(String jwtToken) {
         return Jwts.parser()
                 .setSigningKey(getSecretKey(secretKey))
                 .build()
