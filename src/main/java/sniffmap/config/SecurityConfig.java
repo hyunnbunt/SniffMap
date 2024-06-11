@@ -75,7 +75,7 @@ public class SecurityConfig {
         http.csrf(AbstractHttpConfigurer::disable);
         http.cors(corsCustomizer -> corsCustomizer.configurationSource(request -> {
             CorsConfiguration config = new CorsConfiguration();
-            config.setAllowedOrigins(Collections.singletonList("http://http://ec2-43-203-243-231.ap-northeast-2.compute.amazonaws.com/"));
+            config.setAllowedOrigins(Collections.singletonList("http://ec2-43-203-243-231.ap-northeast-2.compute.amazonaws.com/"));
             config.setAllowedMethods(Collections.singletonList("*"));
             config.setAllowCredentials(true);
             config.setAllowedHeaders(Collections.singletonList("*"));
