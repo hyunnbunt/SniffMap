@@ -35,6 +35,13 @@ jobs:
             docker start sniffmap_db
             fi
             docker exec sniffmap_db mariadb -e "SHOW DATABASES;"
+            SERVER_PID=$(lsof -t -i:8085)
+            if [ ! -z "$SERVER_PID" ]; then
+              echo "Stopping existing server process with PID $SERVER_PID"
+              kill -9 $SERVER_PID
+            else
+              echo "No existing server process found."
+            fi
             cd app/SniffMap
             git pull origin main
             ./gradlew build
