@@ -30,7 +30,7 @@ jobs:
           script: |
             if [ $(docker ps -q -f name=sniffmap_db) ]; then
             echo "MariaDB container is running."
-            elsegi
+            else
             echo "MariaDB container is not running."
             docker start sniffmap_db
             fi
