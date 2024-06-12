@@ -21,19 +21,6 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-
 
-      - name: Check mariadb docker container is running
-        run: |
-          if [ $(docker ps -q -f name=sniffmap_db) ]; then
-          echo "MariaDB container is running."
-          else
-          echo "MariaDB container is not running."
-          docker start sniffmap_db
-          fi
-
-      - name: Ensure MariaDB is working
-        run: |
-          docker exec sniffmap_db mariadb -e "SHOW DATABASES;"
-
       - name: Deploy to EC2
         uses: appleboy/ssh-action@master
         with:
@@ -41,6 +28,13 @@ jobs:
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_KEY }}
           script: |
+            if [ $(docker ps -q -f name=sniffmap_db) ]; then
+            echo "MariaDB container is running."
+            elsegi
+            echo "MariaDB container is not running."
+            docker start sniffmap_db
+            fi
+            docker exec sniffmap_db mariadb -e "SHOW DATABASES;"
             cd app/SniffMap
             git pull origin main
             ./gradlew build
