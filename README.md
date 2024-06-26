@@ -82,9 +82,8 @@
 
 - request(Content-type: application/json)
     ```json
-    
     {
-    	3
+        3
     }
     ```
     
@@ -94,7 +93,7 @@
     
     {
       "number": 1,
-      "parentName": "testNameOfParent,
+      "parentName": "testNameOfParent",
       "name": "Bunt",
       "age": 4,
       "weight": 7,
@@ -129,8 +128,9 @@
 <details>
 <summary>description</summary>
 <div markdown="1">
-  - 등록 request(Content-type: application/json)
     
+  - 등록 request(Content-type: application/json)
+
     ```json
     {
       "longitude": 126.941575,
@@ -186,8 +186,8 @@
 <details>
 <summary>description</summary>
 <div markdown="1">
+
   - 등록 request(Content-type: application/json)
-    
     ```json
     {
       "time": "Mon Jan 1 00:00:00 KST 2024", 
@@ -249,10 +249,9 @@
 - response 예시
     
     ```json
-    	{
-        100 // 모임 넘버
-    	}
-    ]
+        {
+        100 
+        }
     ```
     
 - 서버 내부 동작 및 exception
