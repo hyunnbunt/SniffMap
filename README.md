@@ -73,7 +73,7 @@
 #### 친구 취소
 | url | method | request | response |
 | --- | --- | --- | --- |
-| dogs/{number}/friends | PATCH | Long | DogDto |
+| dogs/{number}/friends | PATCH | Long | DogDto |
 
 <details>
 <summary>description</summary>
@@ -120,7 +120,7 @@
 #### 산책 장소 등록
 | url | method | request | response |
 | --- | --- | --- | --- |
-| locations | POST | LocationCreateDto | LocationDto |
+| locations | POST | LocationCreateDto | LocationDto |
 #### 산책 장소 삭제
 | url | method | request | response |
 | --- | --- | --- | --- |
@@ -173,11 +173,11 @@
 #### 모임 등록
 | url | method | request | response |
 | --- | --- | --- | --- |
-| events | POST | EventCreateDto | EventDto |
+| events | POST | EventCreateDto | EventDto |
 #### 모임 수정
 | url | method | request | response |
 | --- | --- | --- | --- |
-| events/{number} | PATCH | EventUpdateDto | EventDto |
+| events/{number} | PATCH | EventUpdateDto | EventDto |
 #### 모임 삭제
 | url | method | request | response |
 | --- | --- | --- | --- |
